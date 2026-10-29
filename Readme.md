@@ -60,7 +60,7 @@ The raw dataset (~900 MB) is excluded from version control to keep the repositor
 1. Download the dataset from Kaggle: **[NASA and NOAA Satellites Solar-Wind Dataset](https://www.kaggle.com/datasets/arashnic/soalr-wind)**.
 2. Extract the contents into a folder named `data/` in the root directory of this repository:
    ```text
-   guard_dst_prediction/
+   GUARD/
    ├── data/
    │   ├── solar_wind.csv
    │   ├── labels.csv
@@ -84,12 +84,10 @@ kaggle datasets download -d arashnic/soalr-wind --unzip -p data/
 ## 📁 Repository Structure
 
 ```text
-guard_dst_prediction/
-│
+GUARD/
 ├── main.py               # Central CLI execution entry point
 ├── requirements.txt      # Python dependencies
 ├── .gitignore            # Git exclusion rules for data, models, and outputs
-│
 ├── src/                  # Core modular package
 │   ├── __init__.py       # Package initializer
 │   ├── dataset.py        # Feature engineering, L1 alignment, autoregressive lags, PyTorch DataLoader
@@ -97,7 +95,6 @@ guard_dst_prediction/
 │   ├── loss.py           # Custom AsymmetricGeomagneticLoss implementation
 │   ├── train.py          # Training loop with Cosine Annealing scheduler and gradient clipping
 │   └── evaluate.py       # Metrics calculator & publication-ready diagnostic plot generator
-│
 ├── data/                 # Raw/Preprocessed CSV datasets (Kaggle dataset target)
 └── output/               # Checkpoints and diagnostic visualizations
     ├── best_dst_model.pt
@@ -112,7 +109,7 @@ guard_dst_prediction/
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/your-username/guard_dst_prediction.git](https://github.com/your-username/guard_dst_prediction.git)
+   git clone [https://github.com/your-username/GUARD.git](https://github.com/your-username/GUARD.git)
    cd guard_dst_prediction
    ```
 
