@@ -1,4 +1,4 @@
-# 🌌 MagNet: Physics-Informed Geomagnetic Storm Forecasting
+# 🌌 GUARD: Physics-Informed Geomagnetic Storm Forecasting
 
 > **Predicting Earth's $Dst$ geomagnetic index using hybrid TCN-LSTM networks guided by non-linear magnetospheric physics, pre-aligned L1 solar wind drivers, autoregressive state grounding, and asymmetric storm loss functions.**
 
@@ -8,12 +8,12 @@
 
 Solar wind—streams of charged plasma and magnetic fields ejected by the Sun—constantly interacts with Earth's magnetosphere. Severe geomagnetic storms induced by Coronal Mass Ejections (CMEs) and Coronal Hole High-Speed Streams can trigger ground-induced currents (GICs) that damage electrical grids, disrupt GPS navigation, radio communications, and cause satellite orbital decay.
 
-This repository implements **MagNet**, an end-to-end Physics-Informed Scientific Machine Learning (SciML) pipeline designed to forecast the **$Dst$ (Disturbance Storm Time) index**:
+This repository implements **GUARD** (**G**eomagnetic **U**pstream **A**lert & **R**isk **D**etector), an end-to-end Physics-Informed Scientific Machine Learning (SciML) pipeline designed to forecast the **$Dst$ (Disturbance Storm Time) index**:
 - **$Dst \ge -20\text{ nT}$**: Quiet-time geomagnetic baseline state.
 - **$Dst < -30\text{ nT}$**: Moderate geomagnetic storm threshold.
 - **$Dst < -50\text{ nT}$**: Severe geomagnetic storm depression.
 
-```
+```text
 L1 Solar Wind Telemetry (ACE/DSCOVR) ──► Ballistic Time-Alignment ──► Physical Coupling (Akasofu/Newell/Burton)
                                                                                   │
                                                                                   ▼
@@ -38,7 +38,7 @@ Predicted Dst (t+h) ◄── Asymmetric Loss ◄── LSTM (Ring Current Decay
 
 Evaluation on the test dataset over 1-hour ahead forecasts ($1\text{h}$-ahead):
 
-| Performance Metric | Baseline Model (Pure Solar Wind) | MagNet (Physics + Lags + Cosine Annealing) | Improvement / Delta |
+| Performance Metric | Baseline Model (Pure Solar Wind) | GUARD (Physics + Lags + Cosine Annealing) | Improvement / Delta |
 | :--- | :--- | :--- | :--- |
 | **Best Validation Loss** | `6.3440` | **`3.1543`** | **~50.3% Error Reduction** |
 | **Variance Explained ($R^2$)** | `0.606` | **`0.845`** | **+39.4% Variance Explained** |
@@ -52,24 +52,39 @@ Evaluation on the test dataset over 1-hour ahead forecasts ($1\text{h}$-ahead):
 
 ---
 
-## 📂 Dataset Source & Preparation
+## 📥 Data Setup
 
-This project uses the benchmark **NASA and NOAA Satellites Solar-Wind Dataset** hosted on Kaggle:
-- **Kaggle Dataset**: [NASA and NOAA Satellites Solar-Wind Dataset by Arashnic](https://www.kaggle.com/datasets/arashnic/soalr-wind)
+The raw dataset (~900 MB) is excluded from version control to keep the repository lightweight. Follow these steps to set up the data locally before running the code:
 
-### Required File Structure
-Download and place the dataset CSV files inside the `data/` directory:
-- `solar_wind.csv`: ACE/DSCOVR IMF and plasma measurements ($B_x, B_y, B_z, v_{sw}$, density, temperature).
-- `labels.csv`: Hourly ground truth geomagnetic $Dst$ index values.
-- `satellite_pos.csv`: Ephemeris trajectories for L1 observation satellites.
-- `sunspots.csv`: Solar cycle activity metrics.
+### Option 1: Manual Download (Recommended)
+1. Download the dataset from Kaggle: **[NASA and NOAA Satellites Solar-Wind Dataset](https://www.kaggle.com/datasets/arashnic/soalr-wind)**.
+2. Extract the contents into a folder named `data/` in the root directory of this repository:
+   ```text
+   guard_dst_prediction/
+   ├── data/
+   │   ├── solar_wind.csv
+   │   ├── labels.csv
+   │   ├── satellite_pos.csv
+   │   └── sunspots.csv
+   ├── src/
+   ├── main.py
+   └── README.md
+   ```
+
+### Option 2: Via Kaggle CLI
+If you have the [Kaggle CLI](https://github.com/Kaggle/kaggle-api) set up on your system, run:
+
+```bash
+mkdir -p data
+kaggle datasets download -d arashnic/soalr-wind --unzip -p data/
+```
 
 ---
 
 ## 📁 Repository Structure
 
 ```text
-magnet_dst_prediction/
+guard_dst_prediction/
 │
 ├── main.py               # Central CLI execution entry point
 ├── requirements.txt      # Python dependencies
@@ -97,8 +112,8 @@ magnet_dst_prediction/
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/your-username/magnet_dst_prediction.git](https://github.com/your-username/magnet_dst_prediction.git)
-   cd magnet_dst_prediction
+   git clone [https://github.com/your-username/guard_dst_prediction.git](https://github.com/your-username/guard_dst_prediction.git)
+   cd guard_dst_prediction
    ```
 
 2. **Create and activate a Python virtual environment:**
@@ -111,9 +126,6 @@ magnet_dst_prediction/
    ```bash
    pip install -r requirements.txt
    ```
-
-4. **Populate Dataset:**
-   Download the [Kaggle Solar Wind Dataset](https://www.kaggle.com/datasets/arashnic/soalr-wind) and extract all CSV files into the `data/` folder.
 
 ---
 
