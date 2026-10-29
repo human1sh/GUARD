@@ -1,0 +1,12 @@
+# Custom Project Exclusions
+data/
+*.csv
+output/
+blog.md
+blog_geomagnetic_storm_forecasting.md
+notebook.ipynb
+*.ipynb
+.ipynb_checkpoints/
+
+# IDE & Editor Configurations
+.vscode/
